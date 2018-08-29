@@ -3,9 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { HeaderComponent } from './layout/header.component';
-import { FooterComponent } from './layout/footer.component';
-
 
 @NgModule({
   imports: [
@@ -14,8 +11,6 @@ import { FooterComponent } from './layout/footer.component';
     ReactiveFormsModule,
     HttpModule,
     RouterModule,
-    HeaderComponent,
-    FooterComponent,
   ],
   declarations: [],
   exports: [
