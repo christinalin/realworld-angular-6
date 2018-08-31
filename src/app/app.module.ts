@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 
 import {
+  ApiService,
+  UserService,
   SharedModule,
   HeaderComponent,
   FooterComponent,
@@ -27,7 +29,10 @@ import {
     HomeModule,
     rootRouting,
   ],
-  providers: [],
+  providers: [
+    ApiService,
+    UserService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

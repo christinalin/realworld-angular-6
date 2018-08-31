@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule, NgModule, } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared';
 
