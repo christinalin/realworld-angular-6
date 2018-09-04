@@ -9,7 +9,7 @@
            <follow-button	
             [hidden]="isUser"	
             [profile]="profile"	
-            (onToggle)="onToggleFollowing($event)">	
+            (toggle)="onToggleFollowing($event)">	
           </follow-button>	
             <a [routerLink]="['/settings']"	
                [hidden]="!isUser"	

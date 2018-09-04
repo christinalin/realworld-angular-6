@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
+import { EditorModule } from './editor/editor.module';
 import { HomeModule } from './home/home.module';
 import { ProfileModule } from './profile/profile.module';
 import { SettingsModule } from './settings/settings.module';
@@ -11,6 +12,7 @@ import { SettingsModule } from './settings/settings.module';
 
 import {
   ApiService,
+  ArticlesService,
   AuthGuard,
   HeaderComponent,
   FooterComponent,
@@ -31,6 +33,7 @@ import {
   imports: [
     AuthModule,
     BrowserModule,
+    EditorModule,
     HomeModule,
     ProfileModule,
     rootRouting,
@@ -39,6 +42,7 @@ import {
   ],
 providers: [
     ApiService,
+    ArticlesService,
     AuthGuard,
     JwtService,
     ProfilesService,
