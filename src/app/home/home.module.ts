@@ -10,7 +10,7 @@ const homeRouting: ModuleWithProviders = RouterModule.forChild([
     path: '',
     component: HomeComponent,
     resolve: {
-      isAuthenticated: HomeAuthResolver,
+      isAuthenticated: HomeAuthResolver
     }
   }
 ]);
@@ -24,7 +24,7 @@ const homeRouting: ModuleWithProviders = RouterModule.forChild([
     HomeComponent
   ],
   providers: [
-    HomeAuthResolver,
+    HomeAuthResolver
   ]
 })
 export class HomeModule {}

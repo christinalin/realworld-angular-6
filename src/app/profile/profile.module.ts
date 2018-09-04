@@ -4,28 +4,28 @@ import { RouterModule } from '@angular/router';
 import { ProfileComponent } from './profile.component';
 import { ProfileResolver } from './profile-resolver.service';
 import { SharedModule } from '../shared';
-import { NgModel } from '@angular/forms';
 
 const profileRouting: ModuleWithProviders = RouterModule.forChild([
-    {
-        path: 'profile/:username',
-        component: ProfileComponent,
-        resolve: {
-            profile: ProfileResolver,
-        }
+  {
+    path: 'profile/:username',
+    component: ProfileComponent,
+    resolve: {
+      profile: ProfileResolver
     }
+  }
 ]);
 
 @NgModule({
-    imports: [
-        profileRouting,
-        SharedModule,
-    ],
-    declarations: [
-        ProfileComponent,
-    ],
-    providers: [
-        ProfileResolver
-    ]
+  imports: [
+    profileRouting,
+    SharedModule
+  ],
+  declarations: [
+    ProfileComponent
+  ],
+
+  providers: [
+    ProfileResolver
+  ]
 })
 export class ProfileModule {}
