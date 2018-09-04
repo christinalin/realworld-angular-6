@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Errors, UserService } from '../shared';
+import { Errors, UserService } from '../core';
 
 @Component({
-  selector: 'auth-page',
+  selector: 'app-auth-page',
   templateUrl: './auth.component.html'
 })
 export class AuthComponent implements OnInit {
   authType: String = '';
   title: String = '';
-  errors: Errors = new Errors();
-  isSubmitting: boolean = false;
+  errors: Errors = {errors: {}};
+  isSubmitting = false;
   authForm: FormGroup;
 
   constructor(
@@ -23,8 +23,8 @@ export class AuthComponent implements OnInit {
   ) {
     // use FormBuilder to create a form group
     this.authForm = this.fb.group({
-      'email': '',
-      'password': ''
+      'email': ['', Validators.required],
+      'password': ['', Validators.required]
     });
   }
 
@@ -43,9 +43,9 @@ export class AuthComponent implements OnInit {
 
   submitForm() {
     this.isSubmitting = true;
-    this.errors = new Errors();
+    this.errors = {errors: {}};
 
-    let credentials = this.authForm.value;
+    const credentials = this.authForm.value;
     this.userService
     .attemptAuth(this.authType, credentials)
     .subscribe(

@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Profile } from '../models';
-import { ProfilesService, UserService } from '../services';
+import { Profile, ProfilesService, UserService } from '../../core';
+import { concatMap ,  tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
-  selector: 'follow-button',
+  selector: 'app-follow-button',
   templateUrl: './follow-button.component.html'
 })
 export class FollowButtonComponent {
@@ -16,47 +17,44 @@ export class FollowButtonComponent {
   ) {}
 
   @Input() profile: Profile;
-  @Output() onToggle = new EventEmitter<boolean>();
+  @Output() toggle = new EventEmitter<boolean>();
   isSubmitting = false;
 
   toggleFollowing() {
     this.isSubmitting = true;
+    // TODO: remove nested subscribes, use mergeMap
 
-    this.userService.isAuthenticated.subscribe(
+    this.userService.isAuthenticated.pipe(concatMap(
       (authenticated) => {
         // Not authenticated? Push to login screen
         if (!authenticated) {
           this.router.navigateByUrl('/login');
-          return;
+          return of(null);
         }
 
         // Follow this profile if we aren't already
         if (!this.profile.following) {
-          this.profilesService.follow(this.profile.username)
-          .subscribe(
+          return this.profilesService.follow(this.profile.username)
+          .pipe(tap(
             data => {
               this.isSubmitting = false;
-              this.onToggle.emit(true);
+              this.toggle.emit(true);
             },
             err => this.isSubmitting = false
-          );
+          ));
 
         // Otherwise, unfollow this profile
         } else {
-          this.profilesService.unfollow(this.profile.username)
-          .subscribe(
+          return this.profilesService.unfollow(this.profile.username)
+          .pipe(tap(
             data => {
               this.isSubmitting = false;
-              this.onToggle.emit(false);
+              this.toggle.emit(false);
             },
             err => this.isSubmitting = false
-          );
+          ));
         }
-
       }
-    )
-
-
+    )).subscribe();
   }
-
 }

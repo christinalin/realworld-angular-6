@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { ArticleMetaComponent } from './article-helpers';
+import { ArticleListComponent, ArticleMetaComponent, ArticlePreviewComponent } from './article-helpers';
 import { FavoriteButtonComponent, FollowButtonComponent } from './buttons';
 import { ListErrorsComponent } from './list-errors.component';
 import { ShowAuthedDirective } from './show-authed.directive';
@@ -14,24 +14,28 @@ import { ShowAuthedDirective } from './show-authed.directive';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule
   ],
   declarations: [
+    ArticleListComponent,
     ArticleMetaComponent,
+    ArticlePreviewComponent,
     FavoriteButtonComponent,
     FollowButtonComponent,
     ListErrorsComponent,
     ShowAuthedDirective
   ],
   exports: [
+    ArticleListComponent,
     ArticleMetaComponent,
+    ArticlePreviewComponent,
     CommonModule,
     FavoriteButtonComponent,
     FollowButtonComponent,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     ListErrorsComponent,
     RouterModule,
     ShowAuthedDirective

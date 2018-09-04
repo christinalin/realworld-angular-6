@@ -9,10 +9,10 @@ import {
   CommentsService,
   User,
   UserService
-} from '../shared';
+} from '../core';
 
 @Component({
-  selector: 'article-page',
+  selector: 'app-article-page',
   templateUrl: './article.component.html'
 })
 export class ArticleComponent implements OnInit {

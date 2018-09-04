@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Article, ArticlesService } from '../shared';
+import { Article, ArticlesService } from '../core';
 
 @Component({
-  selector: 'editor-page',
+  selector: 'app-editor-page',
   templateUrl: './editor.component.html'
 })
 export class EditorComponent implements OnInit {
-  article: Article = new Article();
+  article: Article = {} as Article;
   articleForm: FormGroup;
   tagField = new FormControl();
   errors: Object = {};
-  isSubmitting: boolean = false;
+  isSubmitting = false;
 
   constructor(
     private articlesService: ArticlesService,
@@ -25,27 +25,29 @@ export class EditorComponent implements OnInit {
     this.articleForm = this.fb.group({
       title: '',
       description: '',
-      body: '',
+      body: ''
     });
+
+    // Initialized tagList as empty array
+    this.article.tagList = [];
+
     // Optional: subscribe to value changes on the form
     // this.articleForm.valueChanges.subscribe(value => this.updateArticle(value));
   }
 
   ngOnInit() {
     // If there's an article prefetched, load it
-    this.route.data.subscribe(
-      (data: {article: Article}) => {
-        if (data.article) {
-          this.article = data.article;
-          this.articleForm.patchValue(data.article);
-        }
+    this.route.data.subscribe((data: { article: Article }) => {
+      if (data.article) {
+        this.article = data.article;
+        this.articleForm.patchValue(data.article);
       }
-    );
+    });
   }
 
   addTag() {
     // retrieve tag control
-    let tag = this.tagField.value;
+    const tag = this.tagField.value;
     // only add tag if it does not exist yet
     if (this.article.tagList.indexOf(tag) < 0) {
       this.article.tagList.push(tag);
@@ -55,7 +57,7 @@ export class EditorComponent implements OnInit {
   }
 
   removeTag(tagName: string) {
-    this.article.tagList = this.article.tagList.filter((tag) => tag !== tagName);
+    this.article.tagList = this.article.tagList.filter(tag => tag !== tagName);
   }
 
   submitForm() {
@@ -65,9 +67,7 @@ export class EditorComponent implements OnInit {
     this.updateArticle(this.articleForm.value);
 
     // post the changes
-    this.articlesService
-    .save(this.article)
-    .subscribe(
+    this.articlesService.save(this.article).subscribe(
       article => this.router.navigateByUrl('/article/' + article.slug),
       err => {
         this.errors = err;
@@ -77,6 +77,6 @@ export class EditorComponent implements OnInit {
   }
 
   updateArticle(values: Object) {
-    (<any>Object).assign(this.article, values);
+    Object.assign(this.article, values);
   }
 }

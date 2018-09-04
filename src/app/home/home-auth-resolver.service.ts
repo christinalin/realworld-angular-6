@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/take';
 
-import { UserService } from '../shared';
+import { UserService } from '../core';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class HomeAuthResolver implements Resolve<boolean> {
@@ -17,7 +17,7 @@ export class HomeAuthResolver implements Resolve<boolean> {
     state: RouterStateSnapshot
   ): Observable<boolean> {
 
-    return this.userService.isAuthenticated.take(1);
+    return this.userService.isAuthenticated.pipe(take(1));
 
   }
 }

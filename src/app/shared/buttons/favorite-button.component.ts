@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Article } from '../models';
-import { ArticlesService, UserService } from '../services';
+import { Article, ArticlesService, UserService } from '../../core';
+import { of } from 'rxjs';
+import { concatMap ,  tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'favorite-button',
+  selector: 'app-favorite-button',
   templateUrl: './favorite-button.component.html'
 })
 export class FavoriteButtonComponent {
@@ -16,47 +17,44 @@ export class FavoriteButtonComponent {
   ) {}
 
   @Input() article: Article;
-  @Output() onToggle = new EventEmitter<boolean>();
+  @Output() toggle = new EventEmitter<boolean>();
   isSubmitting = false;
 
   toggleFavorite() {
     this.isSubmitting = true;
 
-    this.userService.isAuthenticated.subscribe(
+    this.userService.isAuthenticated.pipe(concatMap(
       (authenticated) => {
         // Not authenticated? Push to login screen
         if (!authenticated) {
           this.router.navigateByUrl('/login');
-          return;
+          return of(null);
         }
 
         // Favorite the article if it isn't favorited yet
         if (!this.article.favorited) {
-          this.articlesService.favorite(this.article.slug)
-          .subscribe(
+          return this.articlesService.favorite(this.article.slug)
+          .pipe(tap(
             data => {
               this.isSubmitting = false;
-              this.onToggle.emit(true);
+              this.toggle.emit(true);
             },
             err => this.isSubmitting = false
-          );
+          ));
 
         // Otherwise, unfavorite the article
         } else {
-          this.articlesService.unfavorite(this.article.slug)
-          .subscribe(
+          return this.articlesService.unfavorite(this.article.slug)
+          .pipe(tap(
             data => {
               this.isSubmitting = false;
-              this.onToggle.emit(false);
+              this.toggle.emit(false);
             },
             err => this.isSubmitting = false
-          );
+          ));
         }
 
       }
-    )
-
-
+    )).subscribe();
   }
-
 }
